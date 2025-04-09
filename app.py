@@ -2,16 +2,22 @@ from flask import Flask, request, render_template
 import sklearn
 import pickle
 import pandas as pd
+import os
 
 
 app = Flask(__name__)
-model = pickle.load(open("C:/Users/ferna/OneDrive/Desktop/BDA PBL/Flight-Fare-Prediction/notebook/flight.pkl", "rb"))
+
+model_path = os.path.join("notebook", "flight.pkl")
+with open(model_path, "rb") as file:
+    model = pickle.load(file)
 
 
 @app.route("/")
 def index():
-    with open("C:/Users/ferna/OneDrive/Desktop/BDA PBL/Flight-Fare-Prediction/notebook/AccuracyValues.txt","r") as f:
+    accuracy_path = os.path.join("notebook", "AccuracyValues.txt")
+    with open(accuracy_path, "r") as f:
         lines = f.readlines()
+
 
     accuracy_ETR = round(float(lines[0].strip()),3)
     accuracy_LM = round(float(lines[1].strip()),3)
